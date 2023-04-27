@@ -23,7 +23,9 @@
     <Compile Include="code\main.py" />
     <Compile Include="code\me_arm_driver.py" />
     <Compile Include="code\physical_interface.py" />
+    <Compile Include="code\sonar_driver.py" />
     <Compile Include="code\triangulation.py" />
+    <Compile Include="code\view.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="code\" />
