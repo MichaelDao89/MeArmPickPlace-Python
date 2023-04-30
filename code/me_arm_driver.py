@@ -5,11 +5,10 @@
 # 23 - Gripper (16)
 
 from math import acos, atan, atan2, sqrt
-import my_extension as ext
-#from gpiozero import Servo
-#import RPi.GPIO as GPIO
 import pigpio
 from time import sleep
+from my_servo import Servo
+import my_extension as ext
 
 ############## CONSTANTS ##############
 # You can work in any units, as long as they all match; these
@@ -32,27 +31,6 @@ GRIP_CLOSE_ANGLE = 120;
 _baseServo, _shoulderServo, _elbowServo, _gripperServo = None, None, None, None
 _currentPosition, _currentGrip = None, None
 _stepInterval = None
-
-class Servo():
-    def __init__(self, pin, pwm, minPWM = 1000, maxPWM = 2000, minAngle = 0, maxAngle = 180):
-        self.pin = pin
-        self.pwm = pwm
-        self.minPWM = minPWM
-        self.maxPWM = maxPWM
-        self.minAngle = minAngle
-        self.maxAngle = maxAngle
-
-    def setAngle(self, angle):
-        #print(str(self.minPWM))
-        angle = ext.clip(angle, self.minAngle, self.maxAngle)
-        self.pwm.set_servo_pulsewidth(
-            self.pin, 
-            ext.map(angle, self.minAngle, self.maxAngle, self.minPWM, self.maxPWM)
-            )
-
-    def detach(self):
-        self.pwm.set_PWM_dutycycle(self.pin, 0)
-        self.pwm.set_PWM_frequency(self.pin, 0)
 
 def begin(pwm, basePin, shoulderPin, elbowPin, gripperPin):
     # will change these values

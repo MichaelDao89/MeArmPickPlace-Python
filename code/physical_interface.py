@@ -13,6 +13,7 @@
 import pigpio
 from time import sleep
 import me_arm_driver as meArm
+from me_arm_driver import ACTIONS_DELAY
 import sonar_driver as sonar
 
 pins = (8, 25, 24, 23)
@@ -22,38 +23,82 @@ def begin():
     pwm = pigpio.pi()
 
     meArm.begin(pwm, 8, 25, 24, 23)
-    sonar.begin(pwm, 17, 27, 22, resultCallback=processSonarResult)
+    sonar.begin(pwm, 17, 27, 22)
     sleep(0.5)
 
-    while (True):
-        i = input("Test arm? (y/n): ")
-        if i == 'y':
-            testArm()
-        else:
-            i = input("Test sonar? (y/n): ")
-
-            if i == 'y':
-                i = input("Test type? (i - integration, r - neck rotation, d - distance): ")
-                if (i == 'i'):
-                    sonar.testIntegration()
-                elif (i == 'r'):    
-                    sonar.testNeckRotation()
-                elif (i == 'd'):
-                    sonar.testDistanceMeasuring()
-                #print('Need refactoring...')
-                #tri.test()
-            #testArmServos()
-    #testArm()
-
-def printResult(r):
-    print(r)
-
-def processSonarResult(r):
-    print(r)
-
 def end():
-
+    meArm.end()
+    sonar.end()
     print('---------------- PHYSICAL PERIPHERAL ENG ----------------')
+
+def scanEnvironment():
+    print('---------------- SCANNING ENVIRONMENT ----------------')
+    return sonar.scan()
+    print('---------------- SCAN ENVIRONMENT ENDED ----------------')
+
+def armPickUpSequence(position):
+    print('---------------- GOING TO PICKUP ----------------')
+    sleep(ACTIONS_DELAY / 1000) # make sure all existing movements are completed
+
+    # Go to prep position
+    meArm.openGripper()
+
+    # Go to target position
+    meArm.gotoPoint(position[0], position[1], position[2])
+    sleep(ACTIONS_DELAY/ 1000)
+
+    # Pick up
+    meArm.closeGripper()
+    sleep(ACTIONS_DELAY * 5 / 1000)
+
+    meArm.gotoHome()
+    print('---------------- PICKED UP ----------------')
+    
+
+def armDropOffSequence(position):
+    print('---------------- GOING TO DROP OFF ----------------')
+    sleep(ACTIONS_DELAY/ 1000) # make sure all existing movements are completed
+
+    # Go to drop off position
+    meArm.gotoPoint(position[0], position[1], position[2])
+    sleep(ACTIONS_DELAY/ 1000)
+
+    # Drop off
+    meArm.openGripper()
+    sleep(0.2)
+
+    # Lift arm up
+    meArm.gotoPoint(position[0] - 10, position[1], position[2] + 30)
+    sleep(ACTIONS_DELAY/ 1000)
+
+    # Return to home
+    meArm.gotoHome()
+    print('---------------- DROPPED OFF ----------------')
+
+def runTests():
+    print('---------------- PERIPHERAL TESTS BEGIN ----------------')
+    try:
+        i = input("Begin test? (y/n):")
+        while (i == "y"):
+            i = input("Test arm? (y/n): ")
+            if i == 'y':
+                testArm()
+            else:
+                i = input("Test sonar? (y/n): ")
+                if i == 'y':
+                    i = input("Test type? (i - integration, r - neck rotation, d - distance): ")
+                    if (i == 'i'):
+                        sonar.testIntegration()
+                    elif (i == 'r'):    
+                        sonar.testNeckRotation()
+                    elif (i == 'd'):
+                        sonar.testDistanceMeasuring()
+            i = input("retest? (y/n):")
+        print('---------------- EXIT TESTS ----------------')
+        return
+    except KeyboardInterrupt:
+        print('---------------- TESTS INTERRUPTED ----------------')
+        return
 
 def testArm():
     print('---------------- ARM TEST BEGIN ----------------')

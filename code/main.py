@@ -15,8 +15,13 @@ import physical_interface as phy
 def main():
     print('Hello Michael')
     phy.begin()
+    phy.runTests()
+
+    print(phy.scanEnvironment())
+    phy.armPickUpSequence([100, 50, 20])
+    phy.armDropOffSequence([50, -50, 50])
+    phy.end()
 
 if __name__ == "__main__":
     main()
-
 
