@@ -11,3 +11,7 @@ def map(value, leftMin, leftMax, rightMin, rightMax):
 
     # Convert the 0-1 range into a value in the right range.
     return rightMin + (valueScaled * rightSpan)
+
+def angle2pwm(angle):
+    return angle / 18 + 2
+ 

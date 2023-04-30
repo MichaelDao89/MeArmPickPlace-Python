@@ -10,7 +10,7 @@
 # 22 - Echo (Pin 15)
 
 import physical_interface as phy
-import triangulation as tri
+#import triangulation as tri
 
 def main():
     print('Hello Michael')

@@ -54,13 +54,10 @@ class Servo():
         self.pwm.set_PWM_dutycycle(self.pin, 0)
         self.pwm.set_PWM_frequency(self.pin, 0)
 
-def begin(basePin, shoulderPin, elbowPin, gripperPin):
+def begin(pwm, basePin, shoulderPin, elbowPin, gripperPin):
     # will change these values
     global _baseServo, _shoulderServo, _elbowServo, _gripperServo
     global _stepInterval
-
-    pwm = pigpio.pi()
-    pwm.set_mode(basePin, pigpio.OUTPUT)
 
     # Attach the servos
     if (_baseServo is None):
