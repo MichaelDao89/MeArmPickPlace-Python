@@ -23,7 +23,7 @@ SPEED = 50.0; # movement speed, in cm/seconds
 ACTIONS_DELAY = 100.0; # delay between actions, in milliseconds
 
 # Default angles
-HOME_POS = [50, 0, 50]
+HOME_POS = [50.0, 0.0, 50.0]
 GRIP_OPEN_ANGLE = 155;
 GRIP_CLOSE_ANGLE = 120;
 
@@ -101,7 +101,8 @@ def goDirectlyTo(x, y, z):
     h = sqrt(l * l + tarZ * tarZ);
 
     phi = atan(tarZ / l) * 57.2958
-    theta = acos((h / 2) / SEGMENT_LENGTH) * 57.2958
+    boo = ext.clip((h / 2.0) / SEGMENT_LENGTH, -1, 1)
+    theta = acos(boo) * 57.2958
 
     a1 = phi + theta # angle for first part of the arm
     a2 = phi - theta # angle for second part of the arm
@@ -109,7 +110,7 @@ def goDirectlyTo(x, y, z):
     b = 110 + b
     a1 = 180 - a1
     a2 = 90 + a2
-    print('Pushing angles: ' + str(int(b)) + ', ' + str(int(a1)) + ', ' + str(int(a2)))
+    #print('Pushing angles: ' + str(int(b)) + ', ' + str(int(a1)) + ', ' + str(int(a2)))
 	# Move to the calculated angles
 	# Constraint to safe angles (physically checked servo limits on built arm)
 	# Also add offsets to mimic the physical arm

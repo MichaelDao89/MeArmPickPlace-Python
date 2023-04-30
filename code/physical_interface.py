@@ -68,7 +68,7 @@ def armDropOffSequence(position):
     sleep(0.2)
 
     # Lift arm up
-    meArm.gotoPoint(position[0] - 10, position[1], position[2] + 30)
+    meArm.gotoPoint(position[0] - 10, position[1], position[2] + 50)
     sleep(ACTIONS_DELAY/ 1000)
 
     # Return to home

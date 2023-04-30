@@ -1,8 +1,6 @@
 
 from turtle import *
 from math import *
-import os
-from PIL import Image
 
 scaling = 2
 gridCellSize = 25
@@ -122,7 +120,7 @@ def drawCircle(position, radius, name=None, labelFont = normalFont, color='black
         pendown()
         write(name, font=labelFont)
 
-def extract(input_string):
+def extract_legacy(input_string):
     result = []
     lines = input_string.split('\n')
     for line in lines:
@@ -133,6 +131,14 @@ def extract(input_string):
         dis = float(parts[3])
         result.append([angle, dis])
     result.sort(key=lambda x: x[0])
+    return result
+
+#input format: [(angle in degree, distance in mm), (angle, distance), ...)]
+def extract(input):
+    result = []
+    for item in input:
+        if item[1] > 0.1:
+            result.append(item)
     return result
 
 def calculatePosition(angle, dis):
@@ -695,12 +701,12 @@ Angle: 29. Dis: 640.21
 """
 
 targetRadius = 17.5
-armPos = [85, 5] #using the mirrored space. Need to flip x, y in Arduino IDE
+armPos = [85, 5] #using the mirrored space. Need to SWAP x and y in Arduino IDE, this is only used for drawing purpose
 armRange = 170
 sonarPos = [0, 0]
-sonarRange = 180
+sonarRange = 200
 
-if __name__ == '__main__':
+def findTarget(input):
     drawGrid()
     #pos1 = calculatePosition(100.0-90, 110.1)
     #pos2 = calculatePosition(58.0-90,110.4)
@@ -708,12 +714,16 @@ if __name__ == '__main__':
     #drawCircle(pos2, 17.5, "2")
     
     #data = extract(inLogLongRangeWithCylinder_Left)
-    data = extract(inLogLongRangeWithCylinder_Center)
+    #data = extract(inLogLongRangeWithCylinder_Center)
     #data = extract(inLogLongRangeWithCylinder_Right)
+
+    data = extract(input)
+    if (len(data) < 3): return None
+
     points = []
     for i in range(len(data)):
        p = calculatePosition(data[i][0] - 90, data[i][1])
-       p[0] *= -1           ####### Mirrored, compared to real physical state
+       p[0] *= -1           ####### Mirrored X, compared to real physical state
        points.append(p)
        #drawMark(p, 2)
        if (i > 0):
@@ -754,6 +764,7 @@ if __name__ == '__main__':
             sumDist += d
             drawCircle(candidates[i], targetRadius, color='green', w=1)
 
+    targetPos = None
     # Find the one closest to the average candidate distance
     if (len(finalCandidates) > 0):
         #avgDist = sumDist / len(finalCandidates)
@@ -776,13 +787,15 @@ if __name__ == '__main__':
 
         # Find Median algorithm
         mostLikelyIndex = floor(len(finalCandidates) / 2)  
-
-        drawCircle(finalCandidates[mostLikelyIndex][0], targetRadius, 'FINAL', highlightedFont, 'red', 3)
+        targetPos = finalCandidates[mostLikelyIndex][0]
+        drawCircle(targetPos, targetRadius, 'FINAL', highlightedFont, 'red', 3)
 
     # Pass it on to the arm
     drawCircle(armPos, armRange, 'arm range', normalFont, 'brown', 1)
     drawCircle(armPos, 30, 'arm', normalFont, 'brown', 2)
     drawMark(armPos, 10)
+
+    return targetPos
 
     ## Save the canvas
     ## get the current directory of the Python script
