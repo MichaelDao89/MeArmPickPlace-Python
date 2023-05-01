@@ -1,6 +1,10 @@
 
 from turtle import *
 from math import *
+from PIL import Image
+import os
+from subprocess import call
+from time import strftime, localtime
 
 scaling = 2
 gridCellSize = 25
@@ -795,23 +799,24 @@ def findTarget(input):
     drawCircle(armPos, 30, 'arm', normalFont, 'brown', 2)
     drawMark(armPos, 10)
 
+    canvas = getcanvas()
+    psFilename = "turtle.ps"
+    canvas.postscript(file=psFilename)
+    psimage = Image.open(psFilename)
+    
+    imgName = 'Sonar_result_at_' + strftime("%Y-%m-%d_%H:%M:%S", localtime()) + '.png'
+
+    psimage.save(f"output/{imgName}")
+    Upload = "/home/piMD/Dropbox-Uploader/dropbox_uploader.sh upload output/" + imgName + " IFB102/meArmProject/" + imgName
+    call([Upload], shell=True)
+    os.remove(psFilename)
+    #done()
+
+    reset()
     return targetPos
 
-    ## Save the canvas
-    ## get the current directory of the Python script
-    #path = os.getcwd()
 
-    ## set the file name
-    #file_name = "my_turtle_image.png"
 
-    ## combine the path and file name
-    #file_path = os.path.join(path, file_name)
-
-    ## save the turtle graphic as an image
-    #getcanvas().postscript(file=file_path)
-    #img = Image.open(file_path)
-    #img.save(file_path[:-3] + "png", "png")
-    done()
 
 
 

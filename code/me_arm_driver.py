@@ -23,7 +23,7 @@ SPEED = 40.0; # movement speed, in cm/seconds
 ACTIONS_DELAY = 100.0; # delay between actions, in milliseconds
 
 # Default angles
-HOME_POS = [50.0, 0.0, 50.0]
+HOME_POS = [50.0, 0.0, 75.0]
 GRIP_OPEN_ANGLE = 90;
 GRIP_CLOSE_ANGLE = 140;
 

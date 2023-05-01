@@ -42,13 +42,13 @@ def armPickUpSequence(position):
 
     # Go to prep position
     meArm.openGripper()
-    meArm.gotoPoint(position[0] - 30, position[1] - 30, position[2])
-    sleep(0.2)
-    meArm.gotoPoint(meArm.getX(), position[1] - 10, position[2])
+    #meArm.gotoPoint(20, -10, meArm.getZ())
+    #sleep(0.2)
+    meArm.gotoPoint(position[0] - 10, position[1], position[2])
     sleep(0.2)
 
     # Go to target position
-    #meArm.gotoPoint(position[0], position[1], position[2])
+    meArm.gotoPoint(position[0] + 10, position[1], position[2])
     sleep(ACTIONS_DELAY/ 1000)
 
     # Pick up

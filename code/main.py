@@ -12,37 +12,52 @@
 import physical_interface as phy
 import triangulation as tri
 import my_extension as ext
+from time import sleep
 
-ARM_X_OFFSET = -40    # the sensor position, forward from the base center
-ARM_Y_OFFSET = 50   # the sensor position, left from the base center
+ARM_X_OFFSET = -70    # the sensor position, forward from the base center
+ARM_Y_OFFSET = 20   # the sensor position, left from the base center
 TARGET_HEIGHT = -10
 
 def main():
     print('Hello Michael')
     phy.begin()
-    phy.runTests()
+    #phy.runTests()
 
     try:
-        while True:
-            i = input('Scan now? (y/n): ')
-            if (i == 'y'):
-                r = phy.scanEnvironment()
-                targetPos = tri.findTarget(r)
-                print('____________________________________________')
-                print('Most likely target position: ' + str(targetPos))
+        if (input('step by step? (y/n): ') == 'y'):
+            while True:
+                i = input('Scan now? (y/n): ')
+                if (i == 'y'):
+                    r = phy.scanEnvironment()
+                    targetPos = tri.findTarget(r)
+                    print('____________________________________________')
+                    print('Most likely target position: ' + str(targetPos))
 
-                if (targetPos is not None):
-                    processed = processTargetPos(targetPos)
-                    if (processed is not None):
-                        i = input('Target found, move arm? (y/n):')
-                        if (i == 'y'):
-                            phy.armPickUpSequence(processed)
-
-                            i = input('Drop off? (y/n):')
+                    if (targetPos is not None):
+                        processed = processTargetPos(targetPos)
+                        if (processed is not None):
+                            i = input('Target found, move arm? (y/n):')
                             if (i == 'y'):
-                                phy.armDropOffSequence([75, -100, 30])
-                            else: phy.meArm.openGripper()
+                                phy.armPickUpSequence(processed)
+
+                                i = input('Drop off? (y/n):')
+                                if (i == 'y'):
+                                    phy.armDropOffSequence([75, -100, 30])
+                                else: phy.meArm.openGripper()
+                        else: print('Invalid target position, skipping')
+        else:
+            while True:
+                r = phy.scanEnvironment()
+                tar = tri.findTarget(r)
+                if (tar is not None):
+                    processed = processTargetPos(tar)
+                    if (processed is not None):
+                        phy.armPickUpSequence(processed)
+                        phy.armDropOffSequence([75, -100, 30])
                     else: print('Invalid target position, skipping')
+                else: 
+                    print('No target found, skipping')
+                sleep(0.5)
     except KeyboardInterrupt:
         print('Keyboard interrupt detected, ending program')
         phy.end()
