@@ -22,6 +22,7 @@
     <Compile Include="code\my_extension.py" />
     <Compile Include="code\main.py" />
     <Compile Include="code\me_arm_driver.py" />
+    <Compile Include="code\my_servo.py" />
     <Compile Include="code\physical_interface.py" />
     <Compile Include="code\sonar_driver.py" />
     <Compile Include="code\triangulation.py" />

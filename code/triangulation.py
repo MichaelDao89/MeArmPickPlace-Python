@@ -733,7 +733,7 @@ def findTarget(input):
     rootPos = sonarPos
     rootRange = sonarRange
 
-    interval = 2
+    interval = 3
     current = interval
     candidates = []
     for i in range(len(points)):

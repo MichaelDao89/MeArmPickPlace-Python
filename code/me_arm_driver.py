@@ -17,15 +17,15 @@ SEGMENT_LENGTH = 80; # e.g., shoulder to elbow length
 # X: avoid points inside the base, this moves X = 0 to the edge of the meArm base
 # Y: use this to adjust sideway offsets
 # Z: account for base to shoulder joint offset, this moves Z = 0 to the floor level of the meArm base
-BASE_OFFSET = (0, 0, -30); 
-STEP_SIZE = 1.0; # movement delta when lerping, in mm, lower value = higher step fidelity
-SPEED = 50.0; # movement speed, in cm/seconds
+BASE_OFFSET = (0, 0, -50); 
+STEP_SIZE = 2; # movement delta when lerping, in mm, lower value = higher step fidelity
+SPEED = 40.0; # movement speed, in cm/seconds
 ACTIONS_DELAY = 100.0; # delay between actions, in milliseconds
 
 # Default angles
 HOME_POS = [50.0, 0.0, 50.0]
-GRIP_OPEN_ANGLE = 155;
-GRIP_CLOSE_ANGLE = 120;
+GRIP_OPEN_ANGLE = 90;
+GRIP_CLOSE_ANGLE = 140;
 
 ############### RUNTIME ###############
 _baseServo, _shoulderServo, _elbowServo, _gripperServo = None, None, None, None
@@ -41,12 +41,12 @@ def begin(pwm, basePin, shoulderPin, elbowPin, gripperPin):
     if (_baseServo is None):
         pwm.set_mode(basePin, pigpio.OUTPUT)
         pwm.set_PWM_frequency(basePin, 50)
-        _baseServo = Servo(basePin, pwm, 1000, 2000, 0, 180)
+        _baseServo = Servo(basePin, pwm, 600, 2400, 0, 180)
         #_baseServo = Servo(basePin, 0, 0.750/1000, 2.250/1000)
     if (_shoulderServo is None):
         pwm.set_mode(shoulderPin, pigpio.OUTPUT)
         pwm.set_PWM_frequency(shoulderPin, 50)
-        _shoulderServo = Servo(shoulderPin, pwm, 900, 2100, 20, 160)
+        _shoulderServo = Servo(shoulderPin, pwm, 900, 2100, 0, 180)
         #_shoulderServo = Servo(shoulderPin, 0, 0.9/1000, 2.100/1000)
     if (_elbowServo is None):
         pwm.set_mode(elbowPin, pigpio.OUTPUT)
@@ -56,7 +56,7 @@ def begin(pwm, basePin, shoulderPin, elbowPin, gripperPin):
     if (_gripperServo is None):
         pwm.set_mode(gripperPin, pigpio.OUTPUT)
         pwm.set_PWM_frequency(gripperPin, 50)
-        _gripperServo = Servo(gripperPin, pwm, 460, 2400, 30, 150)
+        _gripperServo = Servo(gripperPin, pwm, 700, 2500, 0, 180)
         #_gripperServo = Servo(gripperPin, 0, 0.460/1000, 2.400/1000)
     print('---------------- ARM BEGIN ----------------')
     print('Servos attached')
@@ -67,7 +67,12 @@ def begin(pwm, basePin, shoulderPin, elbowPin, gripperPin):
     print('Step interval: ' + str(_stepInterval * 1000) + ' milliseconds')
 
     gotoHome(True)
-    sleep(200/1000)
+    openGripper()
+    sleep(500 /1000)
+    closeGripper()
+    sleep(500 /1000)
+    openGripper()
+    sleep(100/1000)
 
 def end():
     gotoHome(True)
@@ -78,6 +83,15 @@ def end():
     _gripperServo.detach()
     print('---------------- ARM ENDED ----------------')
 
+def getX():
+    return _currentPosition[0]
+
+def getY():
+    return _currentPosition[1]
+
+def getZ():
+    return _currentPosition[2]
+
 def gotoHome(bInstant = False):
     print('Going home. Instant? ' + str(bInstant))
     if (bInstant): goDirectlyTo(HOME_POS[0], HOME_POS[1], HOME_POS[2])
@@ -87,6 +101,12 @@ def gotoHome(bInstant = False):
 #    return (angle / 180) * 2 - 1
 
 def goDirectlyTo(x, y, z):
+    #rotated = ext.rotateVector(x, y, 10)
+    #x = rotated[0]
+    #y = rotated[1]
+
+    x = ext.clip(x, 0, 200) # avoid points inside the base
+
     #print('Requested direct: ' + str(x) + ', ' + str(y) + ', ' + str(z))
     tarPos = [x, y, z]
     global _currentPosition # will update this value
@@ -107,7 +127,8 @@ def goDirectlyTo(x, y, z):
     a1 = phi + theta # angle for first part of the arm
     a2 = phi - theta # angle for second part of the arm
 
-    b = 110 + b
+    #b = 110 + b
+    b = 90 + b
     a1 = 180 - a1
     a2 = 90 + a2
     #print('Pushing angles: ' + str(int(b)) + ', ' + str(int(a1)) + ', ' + str(int(a2)))
@@ -137,7 +158,8 @@ def gotoPoint(x, y, z):
     initZ = _currentPosition[2]
 
     # Calculate the distance between the current position and the target point
-    dist = sqrt((initX - x) * (initX - x) + (initY - y) * (initY - y) + (initZ - z) * (initZ - z))
+    #dist = sqrt((initX - x) * (initX - x) + (initY - y) * (initY - y) + (initZ - z) * (initZ - z))
+    dist = ext.dist3(initX, x, initY, y, initZ, z)
 
     # Lerp to the point using step size and step interval
     if (dist > STEP_SIZE): # if the distance is greater than the step size, lerp)
@@ -177,11 +199,15 @@ def closeGripper():
     print('Closing gripper...')
     global _currentGrip
 
-    # lerp gripper using step size and step interval
-    for i in range(0, int((GRIP_CLOSE_ANGLE - _currentGrip) / STEP_SIZE)):
+    ## lerp gripper using step size and step interval
+    #for i in range(0, int(GRIP_CLOSE_ANGLE),  STEP_SIZE):
+    #    _gripperServo.setAngle(i)
+    #    #_gripperServo.value = convertAngle(_currentGrip + i * STEP_SIZE)
+    #    sleep(_stepInterval)
+    for i in range(int(GRIP_OPEN_ANGLE), int(GRIP_CLOSE_ANGLE),  STEP_SIZE):
         _gripperServo.setAngle(i)
         #_gripperServo.value = convertAngle(_currentGrip + i * STEP_SIZE)
-        sleep(_stepInterval)
+        sleep(_stepInterval * 2)
 
     # make sure we arrive
     _gripperServo.setAngle(GRIP_CLOSE_ANGLE)

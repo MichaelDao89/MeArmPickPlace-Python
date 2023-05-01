@@ -13,9 +13,9 @@ import physical_interface as phy
 import triangulation as tri
 import my_extension as ext
 
-ARM_X_OFFSET = -20    # the sensor position, forward from the base center
-ARM_Y_OFFSET = 110   # the sensor position, left from the base center
-TARGET_HEIGHT = 0
+ARM_X_OFFSET = -40    # the sensor position, forward from the base center
+ARM_Y_OFFSET = 50   # the sensor position, left from the base center
+TARGET_HEIGHT = -10
 
 def main():
     print('Hello Michael')
@@ -33,18 +33,23 @@ def main():
 
                 if (targetPos is not None):
                     processed = processTargetPos(targetPos)
-                    print('Processed target position: ' + str(processed))
-                    i = input('Target found, move arm? (y/n):')
-                    if (i == 'y'):
-                        phy.armPickUpSequence(processed)
-                        phy.armDropOffSequence([50, -50, 0])
+                    if (processed is not None):
+                        i = input('Target found, move arm? (y/n):')
+                        if (i == 'y'):
+                            phy.armPickUpSequence(processed)
+
+                            i = input('Drop off? (y/n):')
+                            if (i == 'y'):
+                                phy.armDropOffSequence([75, -100, 30])
+                            else: phy.meArm.openGripper()
+                    else: print('Invalid target position, skipping')
     except KeyboardInterrupt:
         print('Keyboard interrupt detected, ending program')
         phy.end()
 
 def processTargetPos(pos):
     #print('Processing position: ' + str(pos))
-
+    if (pos is None) : return None
     r = []
 
     # swap x and y
@@ -56,11 +61,15 @@ def processTargetPos(pos):
     r[1] += ARM_Y_OFFSET
 
     #print('offset: ' + str(r))
-    #r[1] += ext.map(r[1], -40.0, 250.0, -10.0, 50)
+    #r[1] += ext.map(r[1], -10.0, 130.0, 0.0, -15.0)
 
-    print('final: ' + str(r))
-    r.append(TARGET_HEIGHT)
+    # the further away, the lower the arm should go (adjust for physical arm behavior)
+    heightOffset = ext.map(ext.dist3(r[0], 0, r[1], 0), 5, 100, 0, -20) 
 
+    r.append(TARGET_HEIGHT + heightOffset)
+
+    print('Processed target pos: ' + str(r))
+    if (r[0] < 0): return None # target can't be behind the arm
     return r
 
 

@@ -42,9 +42,13 @@ def armPickUpSequence(position):
 
     # Go to prep position
     meArm.openGripper()
+    meArm.gotoPoint(position[0] - 30, position[1] - 30, position[2])
+    sleep(0.2)
+    meArm.gotoPoint(meArm.getX(), position[1] - 10, position[2])
+    sleep(0.2)
 
     # Go to target position
-    meArm.gotoPoint(position[0], position[1], position[2])
+    #meArm.gotoPoint(position[0], position[1], position[2])
     sleep(ACTIONS_DELAY/ 1000)
 
     # Pick up
@@ -68,7 +72,7 @@ def armDropOffSequence(position):
     sleep(0.2)
 
     # Lift arm up
-    meArm.gotoPoint(position[0] - 10, position[1], position[2] + 50)
+    meArm.gotoPoint(position[0] - 10, position[1], position[2] + 100)
     sleep(ACTIONS_DELAY/ 1000)
 
     # Return to home
@@ -102,35 +106,81 @@ def runTests():
 
 def testArm():
     print('---------------- ARM TEST BEGIN ----------------')
-    print('Arm lerping Y')
-    meArm.gotoPoint(25, 120, 30)
-    sleep(2)
-    meArm.gotoPoint(25, -120, 30)
-    sleep(1)
+    startX = input('Starting x: ')
+    startY = input('Starting y: ')
+    startZ = input('Starting z: ')
+    extend = input('Extend (10-150): ')
+    
+    
+    startX = float(startX)
+    startY = float(startY)
+    startZ = float(startZ)
+    extend = float(extend)
 
-    meArm.gotoHome()
-    print('Arm lerping X')
-    meArm.gotoPoint(130, 0, 30)
-    sleep(2)
-    meArm.gotoPoint(5, 0, 30)
-    sleep(1)
+    testY = input('test Y? (y/n): ')
+    if (testY == 'y'):
+        repeat = 'y'
+        while (repeat == 'y'):
+            print('Arm lerping Y')
+            meArm.gotoPoint(startX, startY, startZ)
+            meArm.gotoPoint(startX, startY + extend, startZ)
+            cont = 'n'
+            while cont != 'y': 
+                cont = input('Continue? (y/n): ')
+            meArm.gotoPoint(startX, startY - extend, startZ)
+            sleep(0.5)
+            repeat = input('Repeat? (y/n): ')
 
-    meArm.gotoHome()
-    print('Arm lerping Z')
-    meArm.gotoPoint(25, 0, 0)
-    sleep(2)
-    meArm.gotoPoint(25, 0, 150)
-    sleep(1)
+    testX = input('test X? (y/n): ')
+    if (testX == 'y'):
+        repeat = 'y'
+        while (repeat == 'y'):
+            meArm.gotoPoint(startX, startY, startZ)
+            print('Arm lerping X')
+            meArm.gotoPoint(startX + extend, startY, startZ)
+            cont = 'n'
+            while cont != 'y': 
+                cont = input('Continue? (y/n): ')
+            meArm.gotoPoint(5, startY, startZ)
+            sleep(0.5)
+            repeat = input('Repeat? (y/n): ')
 
-    meArm.gotoHome()
-    print('Arm picking up')
-    meArm.gotoPoint(70, 70, 0)
-    sleep(0.5)
-    meArm.openGripper()
-    meArm.closeGripper()
-    sleep(0.5)
-    meArm.gotoPoint(50, -100, 50)
-    sleep(1)
+    testZ = input('test z? (y/n): ')
+    if (testZ == 'y'):
+        repeat = 'y'
+        while (repeat == 'y'):
+            meArm.gotoPoint(startX, startY, startZ)
+            print('Arm lerping Z')
+            meArm.gotoPoint(startX, startY, startZ + extend)
+            cont = 'n'
+            while cont != 'y': 
+                cont = input('Continue? (y/n): ')
+            meArm.gotoPoint(startX, startY, startZ + extend)
+            sleep(0.5)
+            repeat = input('Repeat? (y/n): ')
+
+    testPos = input('Test positions? (y/n): ')
+    while (testPos == 'y'):
+        print('Testing positions')
+        x = float(input('X: '))
+        y = float(input('Y: '))
+        z = float(input('Z: '))
+        go = input('Go to position? (y/n): ')
+        if (go == 'y'):
+            meArm.gotoPoint(x, y, z)
+            testPos = input('Test another position? (y/n): ')
+
+    testCombined = input('Test combined? (y/n): ')
+    if (testCombined == 'y'):
+        meArm.gotoHome()
+        print('Arm picking up')
+        meArm.gotoPoint(70, 70, 0)
+        sleep(0.2)
+        meArm.openGripper()
+        meArm.closeGripper()
+        sleep(0.2)
+        meArm.gotoPoint(50, -100, 50)
+        sleep(0.5)
 
     meArm.gotoHome()
     meArm.end()

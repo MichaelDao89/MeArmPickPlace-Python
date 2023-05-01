@@ -11,7 +11,7 @@ _neckPWM = None
 # speed in degrees per seconds
 # range in millimeters
 # rotation in degrees
-def begin(pwm, neckPin, triggerPin, echoPin, speed = 270, minRotation = 10, maxRotation = 170, minRange = 5, maxRange = 300):
+def begin(pwm, neckPin, triggerPin, echoPin, speed = 200, minRotation = 20, maxRotation = 160, minRange = 5, maxRange = 300):
 	global _neckPWM, _minRotation, _maxRotation, _minRange, _maxRange	# values
 	global _neckPin, _triggerPin, _echoPin	# pins
 	global _stepInterval, _sonarTimeout	   # calculated values
@@ -53,20 +53,34 @@ def end():
 def rotate360(delegate = None):
 	results = []
 
+	# from center to max
+	for i in range(90, _minRotation, -STEP_SIZE):
+		setNeckAngle(i)
+		sleep(_stepInterval)
+
 	for i in range(_minRotation, _maxRotation, STEP_SIZE):
-		_neckPWM.set_servo_pulsewidth(_neckPin, ext.map(i, _minRotation, _maxRotation, 600, 2400))
-		# execute function
+		setNeckAngle(i)
 		if (delegate is not None):
 			results.append((i, delegate()))
 		sleep(_stepInterval)
 
 	for i in range(_maxRotation, _minRotation, -STEP_SIZE):
-		_neckPWM.set_servo_pulsewidth(_neckPin, ext.map(i, _minRotation, _maxRotation, 600, 2400))
+		setNeckAngle(i)
 		if (delegate is not None):
 			results.append((i, delegate()))
 		sleep(_stepInterval)
 
+	# return to center
+	for i in range(_minRotation, 90, STEP_SIZE):
+		setNeckAngle(i)
+		sleep(_stepInterval)
+
+	# return to center
+	_neckPWM.set_servo_pulsewidth(_neckPin, ext.map(90, 0, 180, 600, 2400))
 	return results
+
+def setNeckAngle(i):
+	_neckPWM.set_servo_pulsewidth(_neckPin, ext.map(i, 0, 180, 600, 2400))
 
 # returns distance in millimeters
 def measureDistance():
