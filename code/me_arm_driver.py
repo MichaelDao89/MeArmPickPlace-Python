@@ -18,9 +18,9 @@ SEGMENT_LENGTH = 80; # e.g., shoulder to elbow length
 # Y: use this to adjust sideway offsets
 # Z: account for base to shoulder joint offset, this moves Z = 0 to the floor level of the meArm base
 BASE_OFFSET = (0, 0, -50); 
-STEP_SIZE = 2.0; # movement delta when lerping, in mm, lower value = higher step fidelity
-SPEED = 40.0; # movement speed, in cm/seconds
-ACTIONS_DELAY = 100.0; # delay between actions, in milliseconds
+STEP_SIZE = 1.0; # movement delta when lerping, in mm, lower value = higher step fidelity
+SPEED = 30.0; # movement speed, in cm/seconds
+ACTIONS_DELAY = 50.0; # delay between actions, in milliseconds
 
 # Default angles
 HOME_POS = [50.0, 0.0, 75.0]

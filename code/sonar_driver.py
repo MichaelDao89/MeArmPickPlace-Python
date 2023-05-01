@@ -3,7 +3,7 @@ import pigpio
 from time import sleep, time
 import my_extension as ext
 
-STEP_SIZE = 2; # movement delta when lerping, in degree, lower value = higher step fidelity
+STEP_SIZE = 5; # movement delta when lerping, in degree, lower value = higher step fidelity
 _stepInterval = 0.05 # in seconds, calculated based on speed
 _sonarTimeout = 0.05 # in seconds, calculated based on maxRange
 _neckPWM = None
@@ -11,7 +11,7 @@ _neckPWM = None
 # speed in degrees per seconds
 # range in millimeters
 # rotation in degrees
-def begin(pwm, neckPin, triggerPin, echoPin, speed = 200, minRotation = 30, maxRotation = 150, minRange = 50, maxRange = 300):
+def begin(pwm, neckPin, triggerPin, echoPin, speed = 270, minRotation = 30, maxRotation = 150, minRange = 50, maxRange = 500):
 	global _neckPWM, _minRotation, _maxRotation, _minRange, _maxRange	# values
 	global _neckPin, _triggerPin, _echoPin	# pins
 	global _stepInterval, _sonarTimeout	   # calculated values

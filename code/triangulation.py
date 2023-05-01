@@ -810,8 +810,8 @@ def findTarget(input):
     imgName = 'Sonar_result_at_' + strftime("%Y-%m-%d_%H:%M:%S", localtime()) + '.png'
 
     psimage.save(f"output/{imgName}")
-    Upload = "/home/piMD/Dropbox-Uploader/dropbox_uploader.sh upload output/" + imgName + " IFB102/meArmProject/" + imgName
-    call([Upload], shell=True)
+    #Upload = "/home/piMD/Dropbox-Uploader/dropbox_uploader.sh upload output/" + imgName + " IFB102/meArmProject/" + imgName
+    #call([Upload], shell=True)
     os.remove(psFilename)
     #done()
 
