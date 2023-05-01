@@ -6,7 +6,7 @@ import os
 from subprocess import call
 from time import strftime, localtime
 
-scaling = 2
+scaling = 1
 gridCellSize = 25
 setup(1000, 1000)
 tracer(False)
@@ -143,6 +143,7 @@ def extract(input):
     for item in input:
         if item[1] > 0.1:
             result.append(item)
+    result.sort(key=lambda x: x[0])
     return result
 
 def calculatePosition(angle, dis):
@@ -790,6 +791,8 @@ def findTarget(input):
         #print('max dist: ' + str(maxDist))
 
         # Find Median algorithm
+        print(f"tri: Final candidates count: {len(finalCandidates)}")
+        print(f"tri: Median index: {floor(len(finalCandidates) / 2)}")
         mostLikelyIndex = floor(len(finalCandidates) / 2)  
         targetPos = finalCandidates[mostLikelyIndex][0]
         drawCircle(targetPos, targetRadius, 'FINAL', highlightedFont, 'red', 3)

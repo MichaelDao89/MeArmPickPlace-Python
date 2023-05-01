@@ -14,14 +14,14 @@ import triangulation as tri
 import my_extension as ext
 from time import sleep
 
-ARM_X_OFFSET = -70    # the sensor position, forward from the base center
-ARM_Y_OFFSET = 20   # the sensor position, left from the base center
-TARGET_HEIGHT = -10
+ARM_X_OFFSET =-30    # the sensor position, forward from the base center
+ARM_Y_OFFSET = 85   # the sensor position, left from the base center
+TARGET_HEIGHT = 0
 
 def main():
     print('Hello Michael')
     phy.begin()
-    #phy.runTests()
+    phy.runTests()
 
     try:
         if (input('step by step? (y/n): ') == 'y'):
@@ -75,11 +75,15 @@ def processTargetPos(pos):
     r[0] += ARM_X_OFFSET
     r[1] += ARM_Y_OFFSET
 
+    rotated = ext.rotateVector(r[0], r[1], 10)
+    r[0] = rotated[0]
+    r[1] = rotated[1]
+
     #print('offset: ' + str(r))
     #r[1] += ext.map(r[1], -10.0, 130.0, 0.0, -15.0)
 
     # the further away, the lower the arm should go (adjust for physical arm behavior)
-    heightOffset = ext.map(ext.dist3(r[0], 0, r[1], 0), 5, 100, 0, -20) 
+    heightOffset = ext.map(ext.dist3(r[0], 0, r[1], 0), 5, 100, 0, -10) 
 
     r.append(TARGET_HEIGHT + heightOffset)
 

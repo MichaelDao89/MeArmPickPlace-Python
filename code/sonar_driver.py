@@ -11,7 +11,7 @@ _neckPWM = None
 # speed in degrees per seconds
 # range in millimeters
 # rotation in degrees
-def begin(pwm, neckPin, triggerPin, echoPin, speed = 200, minRotation = 20, maxRotation = 160, minRange = 5, maxRange = 300):
+def begin(pwm, neckPin, triggerPin, echoPin, speed = 200, minRotation = 30, maxRotation = 150, minRange = 50, maxRange = 300):
 	global _neckPWM, _minRotation, _maxRotation, _minRange, _maxRange	# values
 	global _neckPin, _triggerPin, _echoPin	# pins
 	global _stepInterval, _sonarTimeout	   # calculated values
@@ -106,7 +106,12 @@ def measureDistance():
 	# calculate distance based on time elapsed
 	timeElapsed = stopTime - startTime
 	#print('-----------------------------')
-	return round(timeElapsed * 343000.0 / 2.0, 2)
+	dis = round(timeElapsed * 343000.0 / 2.0, 2)
+
+	if (dis < _minRange or dis > _maxRange):
+		return 0
+	else:
+		return round(timeElapsed * 343000.0 / 2.0, 2)
 
 ################################ TEST methods ################################
 def testNeckRotation():
