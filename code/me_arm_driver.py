@@ -18,7 +18,7 @@ SEGMENT_LENGTH = 80; # e.g., shoulder to elbow length
 # Y: use this to adjust sideway offsets
 # Z: account for base to shoulder joint offset, this moves Z = 0 to the floor level of the meArm base
 BASE_OFFSET = (0, 0, -50); 
-STEP_SIZE = 2; # movement delta when lerping, in mm, lower value = higher step fidelity
+STEP_SIZE = 2.0; # movement delta when lerping, in mm, lower value = higher step fidelity
 SPEED = 40.0; # movement speed, in cm/seconds
 ACTIONS_DELAY = 100.0; # delay between actions, in milliseconds
 
@@ -164,6 +164,8 @@ def gotoPoint(x, y, z):
     # Lerp to the point using step size and step interval
     if (dist > STEP_SIZE): # if the distance is greater than the step size, lerp)
         stepCount = round(dist / STEP_SIZE)
+        print('steps: ' + str(stepCount))
+        print('estimated time: ' + str(stepCount * _stepInterval * 100) + ' milliseconds')
         for i in range(0, stepCount):
             factor = float(i) / float(stepCount)
             goDirectlyTo(initX + (x - initX) * factor, initY + (y - initY) * factor, initZ + (z - initZ) * factor)
@@ -204,7 +206,7 @@ def closeGripper():
     #    _gripperServo.setAngle(i)
     #    #_gripperServo.value = convertAngle(_currentGrip + i * STEP_SIZE)
     #    sleep(_stepInterval)
-    for i in range(int(GRIP_OPEN_ANGLE), int(GRIP_CLOSE_ANGLE),  STEP_SIZE):
+    for i in range(int(GRIP_OPEN_ANGLE), int(GRIP_CLOSE_ANGLE),  int(STEP_SIZE)):
         _gripperServo.setAngle(i)
         #_gripperServo.value = convertAngle(_currentGrip + i * STEP_SIZE)
         sleep(_stepInterval * 2)
