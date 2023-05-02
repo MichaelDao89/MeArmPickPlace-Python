@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="english">
   <head>
-    <title>exported project</title>
+    <title> meArm PnP </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
     <meta property="twitter:card" content="summary_large_image" />
@@ -32,62 +32,60 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&amp;display=swap"
       data-tag="font"
     />
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="../static/style.css" />
   </head>
   <body>
-    <div>
-      <link href="./frame1.css" rel="stylesheet" />
+      <br />
+      <p style="text-align:center">Date and time: {{ time }}</p>
+      <div>
+          <link href="../static/myframes.css" rel="stylesheet" />
+          <div class="container">
+              <h1 style="text-align:center">meArm PnP</h1>
+              <div class="frame-main">
+                  <div class="frame-left">
+                      <img src="../static/images/scan_output/Sonar_result_at_2023-05-01_16_54_01.png"
+                           alt="Scan output 2"
+                           class="feed-main" />
+                      <div class="frame-left-bottom">
+                          <div class="item-1">
+                              <img src="{{ url_for('static', filename=sub1) }}"
+                                   alt="Scan output 2"
+                                   class="feed-sub" />
+                          </div>
+                          <div class="item-1">
+                              <img src="../static/images/scan_output/Sonar_result_at_2023-05-01_16_54_01.png"
+                                   alt="Scan output 3"
+                                   class="feed-sub" />
+                          </div>
+                          <div class="item-1">
+                              <img src="../static/images/scan_output/Sonar_result_at_2023-05-01_16_54_01.png"
+                                   alt="Scan output 4"
+                                   class="feed-sub" />
+                          </div>
+                      </div>
+                  </div>
+                  <div class="frame-right">
+                      <div class="frame-right-top">
+                          <a href="/pause" class="button">Pause</a>
+                          <a href="/resume" class="button">Resume</a>
+                          <a href="/clear_log" class="button">Clear Log</a>
+                      </div>
 
-      <div class="frame1-container">
-        <div class="frame1-frame1">
-          <div class="frame1-frame2">
-            <div class="frame1-frame4">
-              <img
-                src="public/playground_assets/rectangle4212-hv3-700h.png"
-                alt="Rectangle4212"
-                class="frame1-rectangle4"
-              />
-            </div>
-            <div class="frame1-frame5">
-              <img
-                src="public/playground_assets/rectangle129-1oz5-200w.png"
-                alt="Rectangle129"
-                class="frame1-rectangle1"
-              />
-              <img
-                src="public/playground_assets/rectangle2210-o10o-200w.png"
-                alt="Rectangle2210"
-                class="frame1-rectangle2"
-              />
-              <img
-                src="public/playground_assets/rectangle3211-gn9p-200w.png"
-                alt="Rectangle3211"
-                class="frame1-rectangle3"
-              />
-            </div>
+
+                      <div class="console">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras egestas viverra dictum. Cras pretium convallis risus, non molestie risus faucibus nec. Nulla nec mauris orci. Etiam sit amet quam orci. Duis convallis erat purus, id fringilla sapien consequat quis. Cras molestie fermentum sem, ut aliquet dui consequat ac. Donec ut augue vel arcu feugiat imperdiet ac eget dui. Integer tincidunt mauris vel dolor consequat varius. Cras pulvinar, justo et rutrum feugiat, nibh mi suscipit est, ac hendrerit dui ante sed risus. Nunc nec lorem vitae neque sodales posuere at ut ex. Sed efficitur sed enim quis dapibus. Ut a facilisis tellus. Vestibulum congue fringilla dictum. Morbi vulputate orci at dui porttitor vulputate.
+
+                          Quisque accumsan nisi dolor, imperdiet luctus arcu lobortis a. Nam dictum id velit et egestas. Curabitur vel sollicitudin velit. Cras in odio in magna pharetra convallis eget sed nisl. Suspendisse ornare pretium ante ut porta. Suspendisse ipsum sem, cursus non cursus eget, malesuada at lorem. Nam dapibus purus non eleifend condimentum. Sed luctus ex vel ligula pretium, non dignissim nisi hendrerit. Nulla ultricies felis et arcu consectetur, non scelerisque neque bibendum.
+
+                          Nullam sem ex, tincidunt eu mauris quis, mattis blandit urna. Morbi non risus hendrerit, luctus sem nec, porta mi. Duis tincidunt nec dolor nec bibendum. Duis porta tortor nec arcu mattis dictum. Sed diam justo, placerat sed nisl et, tempus tristique justo. Morbi lacinia leo et sapien ultrices porttitor. Vivamus efficitur elementum imperdiet. Praesent velit felis, semper in est id, pretium hendrerit neque. Fusce vitae quam sed velit mollis aliquam. Nam vestibulum nibh id nisi congue, in efficitur diam iaculis. Cras ut ex ut nulla faucibus cursus.
+
+                          Aenean quis erat sed lacus malesuada interdum eu nec metus. Integer lacinia tortor ac nulla rutrum sagittis. Integer quis sapien sed orci pellentesque tristique sollicitudin sed nisl. Ut posuere urna dolor, semper posuere metus congue a. Vivamus tincidunt aliquet posuere. Integer sed est ac neque sollicitudin convallis. Nullam egestas nulla arcu, id dictum elit commodo a.
+
+                          Curabitur dictum mollis porta. Morbi ornare sem arcu, ut vestibulum orci dignissim ac. Quisque fringilla maximus velit, rhoncus sollicitudin ligula tempus id. Nulla tristique consectetur ipsum, eget blandit augue tincidunt eu. Integer in laoreet nulla. Pellentesque vulputate varius hendrerit. Pellentesque purus orci, hendrerit eu ultricies quis, dictum nec felis. Aenean dolor purus, ullamcorper nec diam et, bibendum aliquet sem. Nulla ac diam scelerisque, blandit purus eleifend, faucibus massa. Proin convallis nisi quis sapien scelerisque, sed semper arcu condimentum. Quisque vel rutrum risus. Proin faucibus, ipsum ut mattis auctor, ipsum metus mollis ex, a tincidunt velit nisl non tortor. Pellentesque arcu massa, interdum non facilisis id, ultricies sed mauris. Sed maximus ipsum et metus congue luctus.
+                      </div>
+                  </div>
+              </div>
           </div>
-          <div class="frame1-frame3">
-            <div class="frame1-frame6">
-              <img
-                src="public/playground_assets/rectangle5219-16bs-200h.png"
-                alt="Rectangle5219"
-                class="frame1-rectangle5"
-              />
-              <img
-                src="public/playground_assets/rectangle5213-yqmq-200h.png"
-                alt="Rectangle5213"
-                class="frame1-rectangle51"
-              />
-              <img
-                src="public/playground_assets/rectangle6220-zrg-200h.png"
-                alt="Rectangle6220"
-                class="frame1-rectangle6"
-              />
-            </div>
-            <div class="frame1-frame7"></div>
-          </div>
-        </div>
       </div>
-    </div>
   </body>
 </html>

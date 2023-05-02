@@ -27,10 +27,33 @@
     <Compile Include="code\sonar_driver.py" />
     <Compile Include="code\triangulation.py" />
     <Compile Include="code\view.py" />
+    <Compile Include="code\webserver\webmanager.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="code\" />
-    <Folder Include="code\NewFolder1\" />
+    <Folder Include="code\webserver\" />
+    <Folder Include="code\webserver\static\" />
+    <Folder Include="code\webserver\static\images\" />
+    <Folder Include="code\webserver\static\images\playground_assets\" />
+    <Folder Include="code\webserver\static\images\scan_output\" />
+    <Folder Include="code\webserver\templates\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="code\webserver\package.json" />
+    <Content Include="code\webserver\static\frame1.css" />
+    <Content Include="code\webserver\static\images\playground_assets\rectangle129-1oz5-200w.png" />
+    <Content Include="code\webserver\static\images\playground_assets\rectangle2210-o10o-200w.png" />
+    <Content Include="code\webserver\static\images\playground_assets\rectangle3211-gn9p-200w.png" />
+    <Content Include="code\webserver\static\images\playground_assets\rectangle4212-hv3-700h.png" />
+    <Content Include="code\webserver\static\images\playground_assets\rectangle5213-yqmq-200h.png" />
+    <Content Include="code\webserver\static\images\playground_assets\rectangle5219-16bs-200h.png" />
+    <Content Include="code\webserver\static\images\playground_assets\rectangle6220-zrg-200h.png" />
+    <Content Include="code\webserver\static\images\scan_output\Sonar_result_at_2023-05-01_16_54_01.png" />
+    <Content Include="code\webserver\static\images\scan_output\Sonar_result_at_2023-05-01_16_54_14.png" />
+    <Content Include="code\webserver\static\images\scan_output\Sonar_result_at_2023-05-01_16_54_28.png" />
+    <Content Include="code\webserver\static\myframes.css" />
+    <Content Include="code\webserver\static\style.css" />
+    <Content Include="code\webserver\templates\index.html" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>
