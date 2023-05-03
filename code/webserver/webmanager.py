@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+import random
+from flask import Flask, render_template, jsonify
 import datetime
 
 app = Flask(__name__)
@@ -14,8 +15,14 @@ def index():
         'time': timeStr,
         'sub1': imgStr
         }
+    #return '', 204
     return render_template('index.html', **templateData)
 
+
+@app.route("/update")
+def update():
+    data = 'this is a string: ' + str(random.random())
+    return jsonify(data)
 
 ######################### INPUTS #########################
 @app.route("/<action>")

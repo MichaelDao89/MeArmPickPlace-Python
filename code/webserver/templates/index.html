@@ -36,6 +36,8 @@
   </head>
   <body>
       <br />
+      <p id="output"></p>
+      <p id="demo"></p>
       <p style="text-align:center">Date and time: {{ time }}</p>
       <div>
           <link href="../static/myframes.css" rel="stylesheet" />
@@ -87,5 +89,22 @@
               </div>
           </div>
       </div>
+      <script src="site-updater.js"></script>
+      <script>
+          console.log('hello');
+          setInterval(function () {
+              console.log('update');
+              const date = new Date();
+              document.getElementById("demo").innerHTML = date.toLocaleTimeString();
+
+              fetch('http://172.19.49.52/update')
+                  .then(response => response.json())
+                  .then(data => {
+                      document.getElementById('output').textContent = data;
+                      console.log(data);
+                  })
+                  .catch(error => console.log(error));
+          }, 500);
+      </script>
   </body>
 </html>
