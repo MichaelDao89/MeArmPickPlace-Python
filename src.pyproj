@@ -54,6 +54,7 @@
     <Content Include="code\webserver\static\myframes.css" />
     <Content Include="code\webserver\static\style.css" />
     <Content Include="code\webserver\templates\index.html" />
+    <Content Include="code\webserver\templates\site-updater.js" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
 </Project>
