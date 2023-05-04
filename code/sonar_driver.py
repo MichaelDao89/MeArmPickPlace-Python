@@ -22,7 +22,7 @@ def begin(pwm, neckPin, triggerPin, echoPin, speed = 270, minRotation = 30, maxR
 	_maxRange = maxRange
 	_stepInterval = (1 / (speed / STEP_SIZE))
 	_sonarTimeout = (((_maxRange + 10) / 1000) / (343 / 2.0))
-	print('timeout: ' + str(_sonarTimeout))
+	#print('timeout: ' + str(_sonarTimeout))
 
 	# save pins
 	_neckPin = neckPin

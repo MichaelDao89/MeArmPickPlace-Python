@@ -164,8 +164,8 @@ def gotoPoint(x, y, z):
     # Lerp to the point using step size and step interval
     if (dist > STEP_SIZE): # if the distance is greater than the step size, lerp)
         stepCount = round(dist / STEP_SIZE)
-        print('steps: ' + str(stepCount))
-        print('estimated time: ' + str(stepCount * _stepInterval * 100) + ' milliseconds')
+        #print('steps: ' + str(stepCount))
+        #print('estimated time: ' + str(stepCount * _stepInterval * 100) + ' milliseconds')
         for i in range(0, stepCount):
             factor = float(i) / float(stepCount)
             goDirectlyTo(initX + (x - initX) * factor, initY + (y - initY) * factor, initZ + (z - initZ) * factor)

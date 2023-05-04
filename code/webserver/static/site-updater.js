@@ -1,5 +1,5 @@
 
-setInterval(update, 200);
+setInterval(update, 100);
 
 count = 1;
 
@@ -11,18 +11,10 @@ function update() {
     /*console.log(window.location.hostname)*/
 
     //flaskRoute = 'http://' + window.location.hostname + '/update';
-
-    //count++;
-    //if (count == 4) {
-    //    count = 1;
-    //}
-    /*    document.getElementById('myImage').src = `media/scan_output/sonar${count}.jpg`;*/
-    //document.getElementById('myImage').src = "static/images/scan_output/sonar5.jpg";
-
     fetch('http://' + window.location.hostname + '/update')
         .then(response => response.text())
         .then(data => {
-            console.log(data);
+            //console.log(data);
             const urls = JSON.parse(data);
             document.getElementById('main').src = urls[0];
             document.getElementById('sub1').src = urls[1];

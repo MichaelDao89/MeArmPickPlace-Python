@@ -157,11 +157,12 @@ def calculatePosition(angle, dis):
 def circles_from_p1p2r(p1, p2, r):
     'Following explanation at http://mathforum.org/library/drmath/view/53027.html'
     if r == 0.0:
-        raise ValueError('radius of zero')
+        return None, None
+        #raise ValueError('radius of zero')
     (x1, y1), (x2, y2) = p1, p2
     if p1 == p2:
         #raise ValueError('coincident points gives infinite number of Circles')
-        print('coincident points gives infinite number of Circles: ' + str(p1) + ' ' + str(p2))
+        #print('coincident points gives infinite number of Circles: ' + str(p1) + ' ' + str(p2))
         return None, None
     # delta x, delta y between points
     dx, dy = x2 - x1, y2 - y1
@@ -169,7 +170,7 @@ def circles_from_p1p2r(p1, p2, r):
     q = sqrt(dx**2 + dy**2)
     if q > 2.0*r:
         #raise ValueError('separation of points > diameter')
-        print('eparation of points > diameter: ' + str(p1) + ' ' + str(p2))
+        #print('eparation of points > diameter: ' + str(p1) + ' ' + str(p2))
         return None, None
     # halfway point
     x3, y3 = (x1+x2)/2, (y1+y2)/2
@@ -289,7 +290,7 @@ def findTarget(input):
     
     imgName = 'Sonar_result_at_' + strftime("%Y-%m-%d_%H:%M:%S", localtime()) + '.jpg'
 
-    psimage.save(f"output/{imgName}")
+    #psimage.save(f"output/{imgName}")
     #Upload = "/home/piMD/Dropbox-Uploader/dropbox_uploader.sh upload output/" + imgName + " IFB102/meArmProject/" + imgName
     #call([Upload], shell=True)
 
