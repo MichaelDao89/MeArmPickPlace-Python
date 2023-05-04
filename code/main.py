@@ -9,6 +9,7 @@
 # 27 - Trigger (Pin 13)
 # 22 - Echo (Pin 15)
 
+import webserver.webmanager as web
 import physical_interface as phy
 import triangulation as tri
 import my_extension as ext
@@ -19,10 +20,10 @@ ARM_Y_OFFSET = 85   # the sensor position, left from the base center
 TARGET_HEIGHT = -30
 
 def main():
+    web.startServer()
     print('Hello Michael')
     phy.begin()
     phy.runTests()
-
     try:
         runArm()
     except KeyboardInterrupt:
@@ -54,7 +55,10 @@ def runArm():
     else:
         while True:
             r = phy.scanEnvironment()
+
             tar = tri.findTarget(r)
+            web.updateOutput(tri.getLatestURL())
+
             if (tar is not None):
                 processed = processTargetPos(tar)
                 if (processed is not None):
@@ -63,7 +67,7 @@ def runArm():
                 else: print('Invalid target position, skipping')
             else: 
                 print('No target found, skipping')
-            sleep(0.5)
+            sleep(1)
 
 def processTargetPos(pos):
     #print('Processing position: ' + str(pos))

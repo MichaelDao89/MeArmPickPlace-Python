@@ -36,31 +36,32 @@
   </head>
   <body>
       <br />
-      <p id="output"></p>
       <p id="demo"></p>
-      <p style="text-align:center">Date and time: {{ time }}</p>
+      <p style="text-align:center">Date and time: 
+         <span style="display:inline"><p id="demo"></p></span>
+      </p>
       <div>
           <link href="../static/myframes.css" rel="stylesheet" />
           <div class="container">
               <h1 style="text-align:center">meArm PnP</h1>
               <div class="frame-main">
                   <div class="frame-left">
-                      <img src="../static/images/scan_output/Sonar_result_at_2023-05-01_16_54_01.png"
+                      <img id="main" src="../static/images/scan_output/Sonar_result_at_2023-05-01_16_54_01.png"
                            alt="Scan output 2"
                            class="feed-main" />
                       <div class="frame-left-bottom">
                           <div class="item-1">
-                              <img src="{{ url_for('static', filename=sub1) }}"
+                              <img id="sub1" src=""
                                    alt="Scan output 2"
                                    class="feed-sub" />
                           </div>
                           <div class="item-1">
-                              <img src="../static/images/scan_output/Sonar_result_at_2023-05-01_16_54_01.png"
+                              <img id="sub2" src="../static/images/scan_output/Sonar_result_at_2023-05-01_16_54_01.png"
                                    alt="Scan output 3"
                                    class="feed-sub" />
                           </div>
                           <div class="item-1">
-                              <img src="../static/images/scan_output/Sonar_result_at_2023-05-01_16_54_01.png"
+                              <img id="sub3" src="../static/images/scan_output/Sonar_result_at_2023-05-01_16_54_01.png"
                                    alt="Scan output 4"
                                    class="feed-sub" />
                           </div>
@@ -89,8 +90,8 @@
               </div>
           </div>
       </div>
-      <script src="site-updater.js"></script>
-      <script>
+      <script src="{{ url_for('static', filename='site-updater.js') }}"></script>
+      <!--<script>
           console.log('hello');
           setInterval(function () {
               console.log('update');
@@ -105,6 +106,6 @@
                   })
                   .catch(error => console.log(error));
           }, 500);
-      </script>
+      </script>-->
   </body>
 </html>
