@@ -28,12 +28,11 @@
     <Compile Include="code\triangulation.py" />
     <Compile Include="code\view.py" />
     <Compile Include="code\webserver\webmanager.py" />
+    <Compile Include="code\webserver\__init__.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="code\" />
     <Folder Include="code\webserver\" />
-    <Folder Include="code\webserver\media\" />
-    <Folder Include="code\webserver\media\scan_output\" />
     <Folder Include="code\webserver\static\" />
     <Folder Include="code\webserver\static\images\" />
     <Folder Include="code\webserver\static\images\playground_assets\" />
@@ -50,13 +49,6 @@
     <Content Include="code\webserver\static\images\playground_assets\rectangle5213-yqmq-200h.png" />
     <Content Include="code\webserver\static\images\playground_assets\rectangle5219-16bs-200h.png" />
     <Content Include="code\webserver\static\images\playground_assets\rectangle6220-zrg-200h.png" />
-    <Content Include="code\webserver\media\sonar1.jpg" />
-    <Content Include="code\webserver\media\scan_output\sonar2.jpg" />
-    <Content Include="code\webserver\media\scan_output\sonar3.jpg" />
-    <Content Include="code\webserver\media\scan_output\sonar4.jpg" />
-    <Content Include="code\webserver\static\images\scan_output\Sonar_result_at_2023-05-01_16_54_01.png" />
-    <Content Include="code\webserver\static\images\scan_output\Sonar_result_at_2023-05-01_16_54_14.png" />
-    <Content Include="code\webserver\static\images\scan_output\Sonar_result_at_2023-05-01_16_54_28.png" />
     <Content Include="code\webserver\static\myframes.css" />
     <Content Include="code\webserver\static\style.css" />
     <Content Include="code\webserver\templates\index.html" />
