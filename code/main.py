@@ -13,12 +13,14 @@ PATH_PREFIX = "/home/piMD/MeArm/code/webserver/"
 OUTPUT_PATH = PATH_PREFIX + "static/images/scan_output/"
 
 flag = True
+targetCount = 0
 
 def startSys():
     global flag
 
     if (flag is False): return
     printWeb('System STARTED at ' + strftime("%H:%M:%S") + '<br>')
+    web.set_stats(['1', targetCount, 'RUNNING'])
     flag = False
 
 
@@ -27,6 +29,7 @@ def stopSys():
 
     if (flag is True): return
     printWeb('System STOPPED at ' + strftime("%H:%M:%S") + '<br>')
+    web.set_stats(['1', targetCount, 'STOPPED'])
     flag = True
 
 def main():
@@ -58,6 +61,9 @@ def main():
             printWeb('Target found at: ' + str(simplified) + '. Sending command to arm.')
             phy.armPickUpSequence(processed)
             phy.armDropOffSequence([75, -100, 30])
+
+            global targetCount
+            targetCount+=1
         else: 
             printWeb('Invalid target position. Moving on.')
 
@@ -100,6 +106,7 @@ def printWeb(msg):
 
 if __name__ == "__main__":
     web.startServer(startSys, stopSys)
+    web.set_stats(['1', 0, 'STOPPED'])
     phy.begin()
     printWeb('Main started. Awaiting user input...')
 
@@ -108,6 +115,7 @@ if __name__ == "__main__":
         while True:
             while flag == False:
                 main()
+                web.set_stats(['1', targetCount, 'RUNNING'])
                 sleep(0.5)
             sleep(0.1)
     except KeyboardInterrupt:

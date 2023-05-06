@@ -4,9 +4,9 @@ from PIL import Image
 import os
 from time import strftime, localtime
 
-scaling = 2
-gridCellSize = 25
-setup(1000, 1000)
+scaling = 1
+gridCellSize = 10
+setup(600, 600)
 tracer(False)
 bgcolor('light grey')
 normalFont = ("Arial", 12 * scaling, "normal")
@@ -18,42 +18,42 @@ def drawGrid():
     # Draw the grid lines
     pensize(1)
     pencolor('Lavender')
-    for i in range(-800* scaling, 801* scaling, gridCellSize * scaling):
+    for i in range(-600* scaling, 601* scaling, gridCellSize * scaling):
         penup()
-        goto(-800 * scaling, i)
+        goto(-600 * scaling, i)
         pendown()
-        goto(800 * scaling, i)
-    for i in range(-800* scaling, 801* scaling, gridCellSize * scaling):
+        goto(600 * scaling, i)
+    for i in range(-600* scaling, 601* scaling, gridCellSize * scaling):
         penup()
-        goto(i, -800 * scaling)
+        goto(i, -600 * scaling)
         pendown()
-        goto(i, 800 * scaling)
+        goto(i, 600 * scaling)
 
 
     # Draw the X-axis
     pencolor('black')
     pensize(2)
     penup()
-    goto(-800 * scaling, 0)
+    goto(-600 * scaling, 0)
     pendown()
     forward(1600 * scaling)
 
     # Draw the Y-axis
     penup()
-    goto(0, -800 * scaling)
+    goto(0, -600 * scaling)
     pendown()
     setheading(90)
     forward(1600 * scaling)
 
     # Draw the X-axis tick marks
-    for i in range(-800 * scaling, 801* scaling, 25 * scaling):
+    for i in range(-600 * scaling, 601* scaling, 25 * scaling):
         penup()
         goto(i, -2 * scaling)
         pendown()
         goto(i, 2 * scaling)
 
     # Draw the Y-axis tick marks
-    for i in range(-800* scaling, 801* scaling, 25 * scaling):
+    for i in range(-600* scaling, 601* scaling, 25 * scaling):
         penup()
         goto(-2 * scaling, i)
         pendown()

@@ -9,9 +9,9 @@ sonarPos = [0, 0]
 sonarRange = 200
 latestURL = ""
 
-def findTarget(input):
+def findTarget(_input):
     vis.drawGrid()
-    data = extract(input)
+    data = extractData(_input)
     if (len(data) < 3): return None
 
     points = []
@@ -22,16 +22,17 @@ def findTarget(input):
        if (i > 0):
             vis.drawMarkLinked(points[i - 1], p, 5)
             #print(str(points[i - 1][0]))
-
-    rootPos = sonarPos
-    rootRange = sonarRange
+    processed = processPoints(points);
+    if (len(processed) < 3):
+        exportCanvas()
+        return None
 
     interval = 3
     current = interval
     candidates = []
-    for i in range(len(points)):
+    for i in range(len(processed)):
         if (i == current):
-            c = circles_from_p1p2r(points[i - 1], points[i - interval], targetRadius)
+            c = circles_from_p1p2r(processed[i - 1], processed[i - interval], targetRadius)
             if (c[0] is not None and c[1] is not None):
                 #Choose the answer further away from us
                 position = []
@@ -42,19 +43,13 @@ def findTarget(input):
                 candidates.append(position)
                 vis.drawCircle(position, targetRadius)
             current += interval
-    
-    vis.drawCircle(rootPos, rootRange, 'sonar range', vis.normalFont, 'blue')
-    vis.drawCircle(rootPos, 20, 'sonar', vis.normalFont, 'blue')
-    vis.drawMark(rootPos, 5)
-    sumDist = 0
+            
     finalCandidates = []
     # Filter candidates
     for i in range(len(candidates)):
         # Only cares about ones that are in range
-        d = dist(candidates[i], rootPos);
-        if (d < rootRange):
-            finalCandidates.append([candidates[i], d])
-            sumDist += d
+        if (isInRange(candidates[i], sonarPos, sonarRange)):
+            finalCandidates.append(candidates[i])
             vis.drawCircle(candidates[i], targetRadius, color='green', w=1)
 
     targetPos = None
@@ -64,31 +59,63 @@ def findTarget(input):
         print(f"tri: Final candidates count: {len(finalCandidates)}")
         print(f"tri: Median index: {floor(len(finalCandidates) / 2)}")
         mostLikelyIndex = floor(len(finalCandidates) / 2)  
-        targetPos = finalCandidates[mostLikelyIndex][0]
+        targetPos = finalCandidates[mostLikelyIndex]
         vis.drawCircle(targetPos, targetRadius, 'FINAL', vis.highlightedFont, 'red', 3)
+
+    exportCanvas();
+    return targetPos
+
+def getLatestURL():
+    return latestURL
+
+def exportCanvas():
+    drawMainComps()
+    global latestURL
+    latestURL = vis.save_canvas()
+    vis.reset_canvas()
+
+def drawMainComps():
+    rootPos = sonarPos
+    rootRange = sonarRange
+
+    # Draw the sonar
+    vis.drawCircle(rootPos, rootRange, 'sonar range', vis.normalFont, 'blue')
+    vis.drawCircle(rootPos, 20, 'sonar', vis.normalFont, 'blue')
+    vis.drawMark(rootPos, 5)
 
     # Draw the arm 
     vis.drawCircle(armPos, armRange, 'arm range', vis.normalFont, 'brown', 1)
     vis.drawCircle(armPos, 30, 'arm', vis.normalFont, 'brown', 2)
     vis.drawMark(armPos, 10)
 
-    global latestURL
-    latestURL = vis.save_canvas()
-    vis.reset_canvas()
-
-    return targetPos
-
-def getLatestURL():
-    return latestURL
-
 #input format: [(angle in degree, distance in mm), (angle, distance), ...)]
-def extract(input):
+def extractData(_input):
     result = []
-    for item in input:
+    for item in _input:
         if item[1] > 0.1:
             result.append(item)
     result.sort(key=lambda x: x[0])
     return result
+
+def processPoints(_input):
+    #print('Processing: ' + str(_input))
+    rangeFilter = []
+    for i in range(len(_input)):
+        if (isInRange(_input[i], sonarPos, sonarRange)):
+            rangeFilter.append(_input[i])
+    #print('Remaining: ' + str(rangeFilter))
+
+    rollingAvg = []
+    window_size = 3
+    for i in range(len(rangeFilter)):
+        window_start = max(0, i - window_size + 1)
+        window_end = i + 1
+        window = rangeFilter[window_start:window_end]
+        average_y = sum(y for (x, y) in window) / len(window)
+        rollingAvg.append((rangeFilter[i][0], average_y))
+    #print('Processed: ' + str(rollingAvg))
+    return rollingAvg;
+
 
 def calculatePosition(angle, dis):
     rad = radians(angle)
@@ -127,5 +154,7 @@ def circles_from_p1p2r(p1, p2, r):
 def dist(p1, p2):
     return sqrt((p2[0] - p1[0])**2 + (p2[1] - p1[1])**2)
 
+def isInRange(p1, p2, x):
+    return ((p2[0] - p1[0])**2 + (p2[1] - p1[1])**2) <= (x * x)
 
 

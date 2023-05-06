@@ -1,9 +1,9 @@
 
-setInterval(update, 50);
+setInterval(update, 100);
 count = 1;
 
 function update() {
-    /*console.log('update');*/
+    console.log('update');
     const date = new Date();
     document.getElementById("demo")
         .innerHTML = date.toLocaleTimeString();
@@ -26,5 +26,15 @@ function update() {
         .then(data => {
             const log = JSON.parse(data);
             document.getElementById('log').innerHTML = log;
+        });
+
+    // Update stats
+    fetch('http://' + window.location.hostname + '/get-stats')
+        .then(response => response.text())
+        .then(data => {
+            const stats = JSON.parse(data);
+            document.getElementById('stat_speed').innerHTML = 'Arm speed: ' + stats[0].toString();
+            document.getElementById('stat_targetCount').innerHTML = 'Targets detected: ' + stats[1].toString();
+            document.getElementById('stat_status').innerHTML = 'System status: ' + stats[2].toString();
         });
 }

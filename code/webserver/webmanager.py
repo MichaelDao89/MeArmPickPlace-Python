@@ -10,10 +10,12 @@ app.config["CACHE_TYPE"] = "null"
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
-outputURLs = ["", "", "", "", ""]
 PATH_PREFIX = "/home/piMD/MeArm/code/webserver/"
 OUTPUT_PATH = PATH_PREFIX + "static/images/scan_output/"
+
+outputURLs = ["", "", "", "", ""]
 textLog = ''
+stats = [0, 0] # [speed, targets detected, status]
 
 masterIP = None
 server_thread = None
@@ -73,6 +75,16 @@ def get_log():
 def add_msg(msg):
     global textLog
     textLog += '<br>' + msg;
+
+# Handles stats
+@app.route("/get-stats")
+def get_stats():
+    return jsonify(stats)
+
+def set_stats(data):
+    global stats
+    stats = data
+    return
 
 ######################### INPUTS #########################
 @app.route("/<action>")
