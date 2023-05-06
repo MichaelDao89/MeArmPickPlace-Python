@@ -47,7 +47,7 @@ def armPickUpSequence(position):
     sleep(ACTIONS_DELAY/ 1000)
 
     # Go to target position
-    meArm.gotoPoint(position[0] + 5, position[1], position[2])
+    meArm.gotoPoint(position[0], position[1], position[2])
     sleep(ACTIONS_DELAY/ 1000)
 
     # Pick up

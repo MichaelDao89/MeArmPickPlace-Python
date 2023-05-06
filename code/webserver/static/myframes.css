@@ -111,6 +111,7 @@
     max-height: 70%;
     min-width: 100%;
     display: flex;
+    gap: 10px;
 }
 
 .vertical-text {
@@ -126,7 +127,7 @@
 .feed-main {
     /*flex: 3;*/
     aspect-ratio:1;
-    min-width: 80%;
+    min-width: 95%;
     object-fit: cover;
     border-radius: 10px;
     border: 2px solid #262626;
