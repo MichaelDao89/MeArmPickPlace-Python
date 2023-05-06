@@ -124,7 +124,7 @@
 /* Console */
 .console {
     flex: 1;
-    max-height: 700px;
+    height: 700px;
     padding: 10px;
     background-color: #262626;
     font: 12px/18px "Lucida Console", Monaco, monospace;

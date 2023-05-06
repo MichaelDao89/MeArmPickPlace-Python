@@ -8,7 +8,8 @@ function update() {
     document.getElementById("demo")
         .innerHTML = date.toLocaleTimeString();
 
-    fetch('http://' + window.location.hostname + '/update')
+    // Update images
+    fetch('http://' + window.location.hostname + '/get-images-links')
         .then(response => response.text())
         .then(data => {
             //console.log(data);
@@ -17,5 +18,13 @@ function update() {
             document.getElementById('sub1').src = urls[1];
             document.getElementById('sub2').src = urls[2];
             document.getElementById('sub3').src = urls[3];
+        });
+
+    // Update log
+    fetch('http://' + window.location.hostname + '/get-log')
+        .then(response => response.text())
+        .then(data => {
+            const log = JSON.parse(data);
+            document.getElementById('log').innerHTML = log;
         });
 }

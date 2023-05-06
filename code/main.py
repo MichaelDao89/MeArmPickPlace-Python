@@ -1,5 +1,5 @@
 import my_extension as ext
-from time import sleep
+from time import sleep, strftime
 import os
 import webserver.webmanager as web
 import physical_interface as phy
@@ -12,6 +12,23 @@ TARGET_HEIGHT = -30
 PATH_PREFIX = "/home/piMD/MeArm/code/webserver/"
 OUTPUT_PATH = PATH_PREFIX + "static/images/scan_output/"
 
+flag = True
+
+def startSys():
+    global flag
+
+    if (flag is False): return
+    printWeb('System STARTED at ' + strftime("%H:%M:%S") + '<br>')
+    flag = False
+
+
+def stopSys():
+    global flag
+
+    if (flag is True): return
+    printWeb('System STOPPED at ' + strftime("%H:%M:%S") + '<br>')
+    flag = True
+
 def main():
     # clean up scan_output on startup
     for filename in os.listdir(OUTPUT_PATH):
@@ -23,89 +40,33 @@ def main():
         except Exception as e:
             print(f"Error deleting {file_path}: {e}")
 
-    # Start webserver
-    web.startServer()
-    print('Hello Michael')
-    phy.begin()
-
     # Run arm
-    try:
-        while True:
-            print('-------------------- SEQUENCE BEGINS --------------------')
-            r = phy.scanEnvironment()
+    printWeb('___________________________')
+    printWeb('Collecting data...')
+    r = phy.scanEnvironment()
 
-            tar = tri.findTarget(r)
-            print('-------------------- SCAN COMPLETED --------------------')
-            web.updateOutput(tri.getLatestURL())
+    printWeb('Analysing data...')
+    tar = tri.findTarget(r)
+    web.updateOutput(tri.getLatestURL())
 
-            # delay pickup to allow the user to see the scan result
-            sleep(0.5)
-            if (tar is not None):
-                print('-------------------- ARM ACTIVATED --------------------')
-                processed = processTargetPos(tar)
-                if (processed is not None):
-                    phy.armPickUpSequence(processed)
-                    phy.armDropOffSequence([75, -100, 30])
-                else: print('Invalid target position, skipping')
-            else: 
-                print('No target found, skipping')
+    # delay pickup to allow the user to see the scan result
+    sleep(1)
+    if (tar is not None):
+        processed = processTargetPos(tar)
+        if (processed is not None):
+            simplified = [round(processed[0]), round(processed[1]), round(processed[2])]
+            printWeb('Target found at: ' + str(simplified) + '. Sending command to arm.')
+            phy.armPickUpSequence(processed)
+            phy.armDropOffSequence([75, -100, 30])
+        else: 
+            printWeb('Invalid target position. Moving on.')
 
-            print('-------------------- RESTARTING SEQUENCE --------------------')
-            # delay between scans
-            sleep(1)
-    except KeyboardInterrupt:
-        print('-------------------- Keyboard interrupt detected, ending program --------------------')
-        phy.end()
+    else: 
+        printWeb('No target found. Moving on.')
 
-    #phy.runTests()
-    #try:
-    #    runArm()
-    #except KeyboardInterrupt:
-    #    print('Keyboard interrupt detected, ending program')
-    #    phy.end()
-
-def runArm():
-    if (input('step by step? (y/n): ') == 'y'):
-        while True:
-            i = input('Scan now? (y/n): ')
-            if (i == 'y'):
-                r = phy.scanEnvironment()
-                targetPos = tri.findTarget(r)
-                print('____________________________________________')
-                print('Most likely target position: ' + str(targetPos))
-
-                if (targetPos is not None):
-                    processed = processTargetPos(targetPos)
-                    if (processed is not None):
-                        i = input('Target found, move arm? (y/n):')
-                        if (i == 'y'):
-                            phy.armPickUpSequence(processed)
-
-                            i = input('Drop off? (y/n):')
-                            if (i == 'y'):
-                                phy.armDropOffSequence([75, -100, 30])
-                            else: phy.meArm.openGripper()
-                    else: print('Invalid target position, skipping')
-    else:
-        while True:
-            r = phy.scanEnvironment()
-
-            tar = tri.findTarget(r)
-            web.updateOutput(tri.getLatestURL())
-
-            # delay pickup to allow the user to see the scan result
-            sleep(0.5)
-            if (tar is not None):
-                processed = processTargetPos(tar)
-                if (processed is not None):
-                    phy.armPickUpSequence(processed)
-                    phy.armDropOffSequence([75, -100, 30])
-                else: print('Invalid target position, skipping')
-            else: 
-                print('No target found, skipping')
-
-            # delay between scans
-            sleep(1)
+    # delay between scans
+    printWeb('_______ Restarting ________' + '<br>')
+    return
 
 def processTargetPos(pos):
     #print('Processing position: ' + str(pos))
@@ -133,7 +94,22 @@ def processTargetPos(pos):
     if (r[0] < 0): return None # target can't be behind the arm
     return r
 
+def printWeb(msg):
+    print(msg)
+    web.add_msg(msg)
 
 if __name__ == "__main__":
-    main()
+    web.startServer(startSys, stopSys)
+    phy.begin()
+    printWeb('Main started. Awaiting user input...')
+
+    # main loop
+    try:
+        while True:
+            while flag == False:
+                main()
+                sleep(0.5)
+            sleep(0.1)
+    except KeyboardInterrupt:
+        phy.end()
 

@@ -7,7 +7,7 @@
 from math import acos, atan, atan2, sqrt
 import pigpio
 from time import sleep
-from my_servo import Servo
+from hardware_drivers.my_servo import Servo
 import my_extension as ext
 
 ############## CONSTANTS ##############
@@ -67,12 +67,13 @@ def begin(pwm, basePin, shoulderPin, elbowPin, gripperPin):
     print('Step interval: ' + str(_stepInterval * 1000) + ' milliseconds')
 
     gotoHome(True)
-    openGripper()
-    sleep(500 /1000)
-    closeGripper()
-    sleep(500 /1000)
-    openGripper()
-    sleep(100/1000)
+    sleep(0.1)
+    #openGripper()
+    #sleep(500 /1000)
+    #closeGripper()
+    #sleep(500 /1000)
+    #openGripper()
+    #sleep(100/1000)
 
 def end():
     gotoHome(True)

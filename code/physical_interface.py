@@ -24,7 +24,7 @@ def begin():
 
     meArm.begin(pwm, 8, 25, 24, 23)
     sonar.begin(pwm, 17, 27, 22)
-    sleep(0.5)
+    sleep(0.1)
 
 def end():
     meArm.end()
@@ -32,12 +32,11 @@ def end():
     print('---------------- PHYSICAL PERIPHERAL ENG ----------------')
 
 def scanEnvironment():
-    print('---------------- SCANNING ENVIRONMENT ----------------')
+    #print('---------------- SCANNING ENVIRONMENT ----------------')
     return sonar.scan()
-    print('---------------- SCAN ENVIRONMENT ENDED ----------------')
 
 def armPickUpSequence(position):
-    print('---------------- GOING TO PICKUP ----------------')
+    #print('---------------- GOING TO PICKUP ----------------')
     sleep(ACTIONS_DELAY / 1000) # make sure all existing movements are completed
 
     # Go to prep position
@@ -56,11 +55,11 @@ def armPickUpSequence(position):
     sleep(ACTIONS_DELAY * 5 / 1000)
 
     meArm.gotoHome()
-    print('---------------- PICKED UP ----------------')
+    #print('---------------- PICKED UP ----------------')
     
 
 def armDropOffSequence(position):
-    print('---------------- GOING TO DROP OFF ----------------')
+    #print('---------------- GOING TO DROP OFF ----------------')
     sleep(ACTIONS_DELAY/ 1000) # make sure all existing movements are completed
 
     # Go to drop off position
@@ -77,7 +76,7 @@ def armDropOffSequence(position):
 
     # Return to home
     meArm.gotoHome()
-    print('---------------- DROPPED OFF ----------------')
+    #print('---------------- DROPPED OFF ----------------')
 
 def runTests():
     print('---------------- PERIPHERAL TESTS BEGIN ----------------')
