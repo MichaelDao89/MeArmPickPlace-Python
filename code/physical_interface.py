@@ -12,9 +12,9 @@
 #from gpiozero import Servo
 import pigpio
 from time import sleep
-import me_arm_driver as meArm
-from me_arm_driver import ACTIONS_DELAY
-import sonar_driver as sonar
+import hardware_drivers.me_arm_driver as meArm
+from hardware_drivers.me_arm_driver import ACTIONS_DELAY
+import hardware_drivers.sonar_driver as sonar
 
 pins = (8, 25, 24, 23)
 

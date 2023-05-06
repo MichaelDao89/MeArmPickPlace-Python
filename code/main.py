@@ -1,20 +1,9 @@
-# ARM mapping
-# 8 - Base (Pin 24)
-# 25 - Shoulder (22)
-# 24 - Elbow (18)
-# 23 - Gripper (16)
-
-# SONAR mapping
-# 17 - Neck (Pin 11)
-# 27 - Trigger (Pin 13)
-# 22 - Echo (Pin 15)
-
-import webserver.webmanager as web
-import physical_interface as phy
-import triangulation as tri
 import my_extension as ext
 from time import sleep
 import os
+import webserver.webmanager as web
+import physical_interface as phy
+import processors.triangulation as tri
 
 ARM_X_OFFSET =-30    # the sensor position, forward from the base center
 ARM_Y_OFFSET = 85   # the sensor position, left from the base center
@@ -34,10 +23,12 @@ def main():
         except Exception as e:
             print(f"Error deleting {file_path}: {e}")
 
+    # Start webserver
     web.startServer()
     print('Hello Michael')
     phy.begin()
 
+    # Run arm
     try:
         while True:
             print('-------------------- SEQUENCE BEGINS --------------------')
@@ -133,11 +124,8 @@ def processTargetPos(pos):
     r[0] = rotated[0]
     r[1] = rotated[1]
 
-    #print('offset: ' + str(r))
-    #r[1] += ext.map(r[1], -10.0, 130.0, 0.0, -15.0)
-
     # the further away, the lower the arm should go (adjust for physical arm behavior)
-    heightOffset = ext.map(ext.dist3(r[0], 0, r[1], 0), 5, 100, 0, -20) 
+    heightOffset = ext.map(ext.dist3(r[0], 0, r[1], 0), 5, 100, 0, -30) 
 
     r.append(TARGET_HEIGHT + heightOffset)
 

@@ -3,7 +3,6 @@ from turtle import *
 from math import *
 from PIL import Image
 import os
-from subprocess import call
 from time import strftime, localtime
 
 scaling = 2
