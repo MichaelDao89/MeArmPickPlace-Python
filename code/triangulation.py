@@ -194,15 +194,6 @@ latestURL = ""
 
 def findTarget(input):
     drawGrid()
-    #pos1 = calculatePosition(100.0-90, 110.1)
-    #pos2 = calculatePosition(58.0-90,110.4)
-    #drawCircle(pos1, 17.5, "1")
-    #drawCircle(pos2, 17.5, "2")
-    
-    #data = extract(inLogLongRangeWithCylinder_Left)
-    #data = extract(inLogLongRangeWithCylinder_Center)
-    #data = extract(inLogLongRangeWithCylinder_Right)
-
     data = extract(input)
     if (len(data) < 3): return None
 
@@ -253,24 +244,6 @@ def findTarget(input):
     targetPos = None
     # Find the one closest to the average candidate distance
     if (len(finalCandidates) > 0):
-        #avgDist = sumDist / len(finalCandidates)
-        #minDist = 10000
-        mostLikelyIndex = 0
-
-        # Find closest to Average algorithm
-        #for i in range(len(finalCandidates)):
-        #    if (abs(finalCandidates[i][1] - avgDist) < minDist):
-        #        minDist = finalCandidates[i][1]
-        #        mostLikelyIndex = i
-
-        # Find Max algorithm
-        #maxDist = 0
-        #for i in range(len(finalCandidates)):
-        #    if (finalCandidates[i][1] >= maxDist):
-        #        maxDist = finalCandidates[i][1]
-        #        mostLikelyIndex = i
-        #print('max dist: ' + str(maxDist))
-
         # Find Median algorithm
         print(f"tri: Final candidates count: {len(finalCandidates)}")
         print(f"tri: Median index: {floor(len(finalCandidates) / 2)}")
@@ -289,10 +262,6 @@ def findTarget(input):
     psimage = Image.open(psFilename)
     
     imgName = 'Sonar_result_at_' + strftime("%Y-%m-%d_%H:%M:%S", localtime()) + '.jpg'
-
-    #psimage.save(f"output/{imgName}")
-    #Upload = "/home/piMD/Dropbox-Uploader/dropbox_uploader.sh upload output/" + imgName + " IFB102/meArmProject/" + imgName
-    #call([Upload], shell=True)
 
     savePath = f"webserver/static/images/scan_output/{imgName}"
     psimage.save(savePath)

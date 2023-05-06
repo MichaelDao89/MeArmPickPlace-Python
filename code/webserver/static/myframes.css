@@ -10,11 +10,9 @@
 
 .frame-main {
     flex: 1;
-    /*aspect-ratio: 1;*/
     width:90%;
     height:fit-content;
-/*    width: 1000px;
-    height: 1000px;*/
+
     margin: 5px 5px 5px 5px;
     display: flex;
     gap: 10px;
@@ -22,9 +20,7 @@
     align-items: center;
     justify-content: space-evenly;
     flex-direction: row;
-    /*flex-wrap: wrap;*/
-/*    overflow: scroll;*/
-/*    border: 2px solid #;*/
+
     border-radius: 20px;
     background-color: #ff9e59;
 }
@@ -32,13 +28,11 @@
 .frame-left {
     height: fit-content;
     max-width:60%;
-    /*max-height: fit-content;*/
     flex: 1;
 
     display:flex;
     flex-direction: column;
     gap: 10px;
-    /*border: 3px solid #000000;*/
 }
 
 .frame-left-bottom {
@@ -47,9 +41,7 @@
     display:flex;
     flex-direction: row;
     justify-content: space-evenly;
-    /*flex-wrap: wrap;*/
     gap: 10px;
-    /*border: 3px solid #000000;*/
 }
 
 .frame-right {
@@ -59,7 +51,6 @@
     display:flex;
     flex-direction: column;
     gap: 10px;
-    /*border: 3px solid #000000;*/
 }
 
 .frame-right-top {
@@ -81,7 +72,6 @@
     flex: 1;
     min-height: 50px;
     border-radius: 10px;
-    /*border: 3px solid #b0b0b0;*/
     background-color: #ffd800;
 }
 
@@ -91,27 +81,16 @@
     max-height: 70%;
     min-width: 100%;
     object-fit: cover;
-    /*height: 100%;*/
-    /*aspect-ratio:1/1;*/
     border-radius: 10px;
     border: 3px solid #ffffff;
     background-color: #b0b0b0;
 }
 
 .feed-sub {
-    /*flex: 1;*/
-/*    min-height: 100%;
-    max-width: 30%;*/
     flex: 1;
     max-width: 100%;
-/*    min-width: auto;
-    min-height: 0;*/
-
     object-fit: cover;
-    /*aspect-ratio: 1/1;*/
     border-radius: 10px;
-    /*border:23px solid #000000;*/
-    /*background-color: #b0b0b0;*/
 }
 
 
@@ -120,11 +99,8 @@
 .button {
     flex: 1;
     display: flex;
-    /*display: inline-block;*/
     align-items:center;
     align-content:center;
-    /*padding: 4px 50px;*/
-
     text-align: center;
     max-width: 100%;
     min-height: 50px;
@@ -133,7 +109,6 @@
     background-color: #BCD2EE;
     border-radius: 40px;
 
-    /*padding-top: 7px;*/
     cursor: pointer;
 }
 
@@ -156,6 +131,5 @@
     color: #00ea21;
 
     overflow:scroll;
-    /*white-space: nowrap;*/
     text-overflow: ellipsis;
 }

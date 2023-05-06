@@ -139,10 +139,6 @@ def goDirectlyTo(x, y, z):
     _shoulderServo.setAngle(a1)
     _elbowServo.setAngle(a2)
 
-    #_baseServo.value = convertAngle(b)
-    #_shoulderServo.value = convertAngle(a1)
-    #_elbowServo.value = convertAngle(a2)
-
 	# Update position
     _currentPosition = tarPos
 
@@ -170,14 +166,6 @@ def gotoPoint(x, y, z):
             factor = float(i) / float(stepCount)
             goDirectlyTo(initX + (x - initX) * factor, initY + (y - initY) * factor, initZ + (z - initZ) * factor)
             sleep(_stepInterval)
-
-        #for i in range(0, int(dist / STEP_SIZE)):
-        #    newX = initX + (x - initX) * (i * STEP_SIZE / dist)
-        #    newY = initY + (y - initY) * (i * STEP_SIZE / dist)
-        #    newZ = initZ + (z - initZ) * (i * STEP_SIZE / dist)
-        #    goDirectlyTo(newX, newY, newZ)
-        #    sleep(_stepInterval)
-
     # make sure we arrive
     goDirectlyTo(x, y, z)
 
@@ -201,14 +189,8 @@ def closeGripper():
     print('Closing gripper...')
     global _currentGrip
 
-    ## lerp gripper using step size and step interval
-    #for i in range(0, int(GRIP_CLOSE_ANGLE),  STEP_SIZE):
-    #    _gripperServo.setAngle(i)
-    #    #_gripperServo.value = convertAngle(_currentGrip + i * STEP_SIZE)
-    #    sleep(_stepInterval)
     for i in range(int(GRIP_OPEN_ANGLE), int(GRIP_CLOSE_ANGLE),  int(STEP_SIZE)):
         _gripperServo.setAngle(i)
-        #_gripperServo.value = convertAngle(_currentGrip + i * STEP_SIZE)
         sleep(_stepInterval * 2)
 
     # make sure we arrive

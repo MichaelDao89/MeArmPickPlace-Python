@@ -4,9 +4,12 @@ from flask import Flask, render_template, jsonify, send_file, send_from_director
 import datetime
 import threading
 import os
+import logging
 
 app = Flask(__name__)
 app.config["CACHE_TYPE"] = "null"
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
 
 outputURLs = ["", "", "", "", ""]
 PATH_PREFIX = "/home/piMD/MeArm/code/webserver/"
@@ -18,16 +21,6 @@ def index():
     now = datetime.datetime.now()
     timeStr = now.strftime("%Y-%m-%d %H:%M:%S") 
     templateData = { 'time': timeStr}
-
-    ## clean up scan_output on startup
-    #for filename in os.listdir(OUTPUT_PATH):
-    #    file_path = os.path.join(OUTPUT_PATH, filename)
-    #    try:
-    #        if os.path.isfile(file_path):
-    #            os.remove(file_path)
-    #            print(f"{filename} deleted successfully")
-    #    except Exception as e:
-    #        print(f"Error deleting {file_path}: {e}")
     return render_template('index.html', **templateData)
 
 @app.route("/update")
@@ -91,14 +84,5 @@ def resumeSystem():
 def clearLog():
     return
 
-######################### MAIN #########################
-#if __name__ == '__main__':
-#    app.run(debug=True, port=80, host='0.0.0.0')
-
-
 def startServer():
     threading.Thread(target=lambda: app.run(app.run(port=80, host='0.0.0.0', use_reloader=False, debug=False))).start()
-    #app.run(debug=True, port=80, host='0.0.0.0')
-
-#def threadStartApp():
-#    app.run(port=80, host='0.0.0.0', use_reloader=False, debug=False)
